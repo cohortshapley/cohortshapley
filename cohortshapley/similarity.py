@@ -3,6 +3,18 @@ import numpy as np
 import pandas as pd
 
 # Similarity Function Example
+## unity
+def similar_in_unity(data, subject, vertex):
+    subject = subject.reshape(subject.shape[-1])
+    dataT = data.T
+    ccond = np.ones(data.shape[0])
+    for i in range(vertex.shape[-1]):
+        if vertex[i] == 0:
+            continue
+        cond = np.equal(dataT[i], subject[i])
+        ccond = np.logical_and(ccond, cond)
+    return ccond
+
 ## distance less than ratio of variable range
 ratio = 0.1
 
@@ -78,22 +90,21 @@ def set_bins(x):
 
 
 ### binning
-def binning(X):
+def binning(X, bins=10):
     bin_indices = []
     bin_info_bins = []
     bin_info_x = []
     for j in range(X.shape[1]):
+        n_bins = bins
         v = X[:,j]
         bin_vals = np.unique(v)
-        n_bins = 0
         rep_x = None
         #print(bin_vals)
-        if len(bin_vals) < 10:
+        if len(bin_vals) < n_bins:
             bin_vals = np.sort(bin_vals)
             n_bins = len(bin_vals)
             rep_x = np.array(bin_vals)
         else:
-            n_bins = bins
             bin_vals = np.linspace(v.min(),v.max()+0.001, n_bins+1, endpoint=True)
             rep_x = np.zeros(n_bins)
             for i in range(n_bins):

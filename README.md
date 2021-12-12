@@ -3,8 +3,12 @@ Cohort Shapley (Shapley cohort refinement) is a local explanation method for bla
 
 Cohort Shapley computes variable importance by including or excluding subjects similar to the target subject on that variable to form a similarity cohort and applying Shapley value to the cohort averages. Cohort Shapley is applicable to observational data without the model, or we only need single prediction runs for all data subjects. The variables for explanation can be different from the input variables of training time. That would fit to model auditing and understanding.
 
-See details for the [paper](https://arxiv.org/pdf/1911.00467.pdf):
+See details for the [paper](https://arxiv.org/abs/1911.00467):
 > Mase, M., Owen, A. B., & Seiler, B. (2019). Explaining black box decisions by Shapley cohort refinement. arXiv preprint arXiv:1911.00467.
+
+And its algorithmic fairness [paper](https://arxiv.org/abs/2105.07168):
+> Mase, M., Owen, A. B., & Seiler, B. (2021). Cohort Shapley value for algorithmic fairness. arXiv preprint arXiv:2105.07168.
+
 
 # Install
 Install the package locally with pip command.
@@ -80,6 +84,3 @@ Then you get baseline Shapley value  in bs_obj.shapley_value and squared baselin
 
 # Visualization
 This package includes visualization of aggregated Shapley values for all subjects. See [notebook](notebook).
-
-# Acknowledgements
-The algorithms and visualizations used in the repository are developed in collaborative research of Stanford University and Hitachi, Ltd.
