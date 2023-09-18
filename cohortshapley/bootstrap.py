@@ -54,3 +54,37 @@ def path_mc_cohortshapley(model, similarity, subject_id, data, y=None,
         sampling_shapley_values[k] = cs_objs[k].shapley_values
         sampling_shapley_values2[k] = cs_objs[k].shapley_values2
     return sampling_shapley_values, sampling_shapley_values2, permutations
+
+def union_path_mc_cohortshapley(model, similarity, subject_id, data, union_structure, y=None,
+                          parallel=0, func=np.average, permutations=None,
+                          mc_num=100, times=100,
+                          verbose=0):
+    n = len(subject_id)
+    d = data.shape[-1]
+    m = len(union_structure)
+    if permutations is None:
+        permutations = np.zeros((times, mc_num, d), dtype=int)
+        for l in range(times):
+            for k in range(mc_num):
+                union_ord = np.random.permutation(m)
+                perm = []
+                for union_ind in union_ord:
+                    union = union_structure[union_ind]
+                    perm = np.append(perm,np.random.permutation(union))
+                permutations[l,k] = perm
+    cs_objs = {}
+    if verbose > 0:
+        iter = tqdm(range(times))
+    else:
+        iter = range(times)
+    for k in iter:
+        cs_objs[k] = cs.CohortShapley(model, similarity, subject_id, data, func=func, y=y,
+                                  parallel=parallel, permutations=permutations[k],
+                                  verbose=0)
+        cs_objs[k].compute_cohort_shapley()
+    sampling_shapley_values = np.zeros([times, n, d])
+    sampling_shapley_values2 = np.zeros([times, n, d])
+    for k in range(times):
+        sampling_shapley_values[k] = cs_objs[k].shapley_values
+        sampling_shapley_values2[k] = cs_objs[k].shapley_values2
+    return sampling_shapley_values, sampling_shapley_values2, permutations
