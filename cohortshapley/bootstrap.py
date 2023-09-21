@@ -66,9 +66,9 @@ def union_path_mc_cohortshapley(model, similarity, subject_id, data, union_struc
         permutations = np.zeros((times, mc_num, d), dtype=int)
         for l in range(times):
             for k in range(mc_num):
-                union_ord = np.random.permutation(m)
+                union_order = np.random.permutation(m)
                 perm = []
-                for union_ind in union_ord:
+                for union_ind in union_order:
                     union = union_structure[union_ind]
                     perm = np.append(perm,np.random.permutation(union))
                 permutations[l,k] = perm
